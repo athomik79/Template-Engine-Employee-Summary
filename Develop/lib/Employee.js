@@ -1,10 +1,10 @@
 // TODO: Write code to define and export the Employee class
 class Employee {
-    constructor(id, name, email) {
+    constructor(name, id, email) {
         this.name = name;
         this.id = id;
         this.email = email;
-        this.title = 'Employee';
+        this.title = "Employee";
     }
 
     // Methods
@@ -20,7 +20,7 @@ class Employee {
     }
 
     getRole() {
-        return this.title;x
+        return this.title;
     }
 
 }
