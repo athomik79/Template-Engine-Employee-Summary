@@ -1,16 +1,18 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const render = require("./lib/htmlRenderer");
 const inquire = require("inquirer");
-// const path = require("path");
+const path = require("path");
 const fs = require("fs");
-
-// const OUTPUT_DIR = path.resolve(__dirname, "output")
-// const outputPath = path.join(OUTPUT_DIR, "team.html");
-// ​
-// const render = require("./lib/htmlRenderer");
-
+const util = require("util");
 var teamList = [];
+
+const OUTPUT_DIR = path.resolve(__dirname, "output")
+const outputPath = path.join(OUTPUT_DIR, "team.html");
+
+const writeFileAsync = util.promisify(fs.writeFile);
+
 const managerQuestions = [
     {
         type: "input",
@@ -71,28 +73,59 @@ const employeeQuestions = [
 ]
 
 function buildTeam() {
-    inquire.prompt(employeeQuestions).then(employeeInfo => {
-        if (employeeInfo.role == "engineer") {
-            var newMember = new Engineer(employeeInfo.name, teamList.length+1, employeeInfo.email, employeeInfo.github);
+    inquire.prompt(employeeQuestions).then(employee => {
+        if (employee.role == "engineer") {
+            var newMember = new Engineer(employee.name, teamList.length+1, employee.email, employee.github);
         } else {
-            var newMember = new Intern(employeeInfo.name, teamList.length+1, employeeInfo.email, employeeInfo.school);
+            var newMember = new Intern(employee.name, teamList.length+1, employee.email, employee.school);
         }
         teamList.push(newMember);
-        if (employeeInfo.addAnother === "Yes") {
+        if (employee.addAnother === "Yes") {
             buildTeam();
         } else {
-            console.log(teamList);
+            buildHtml();
         }
+        
     })
 }
 
+async function buildHtml() 
+{
+    try {
+        for (member of teamList) {
+            if (member.getRole() == "Manager") {
+                teamList.push(manager);
+            } else if (member.getRole() == "Engineer") {
+                teamList.push(engineer);
+            } else if (member.getRole() == "Intern") {
+                teamList.push(intern);
+            }
+        }
+    const html = render.render(teamList);
+    return writeFileAsync(outputPath, html);
+    }  
+    catch (err)
+        {
+            console.log("Page Generated!");
+        }
+
+    // fs.appendFileSync("./output/teamPage.html", "</div></main></body></html>", function (err) {
+    //     if (err) throw err;
+    // });
+    // console.log("Page tags closed! Operation completed.")
+
+}
+
+
+
 function init() {
-    inquire.prompt(managerQuestions).then(managerInfo => {
-        let teamManager = new Manager(managerInfo.name, 1, managerInfo.email, managerInfo.officeNum);
+    inquire.prompt(managerQuestions).then(manager => {
+        let teamManager = new Manager(manager.name, 1, manager.email, manager.officeNum);
         teamList.push(teamManager);
         console.log(" ");
         buildTeam();
     })
+
 }
 
 init();
