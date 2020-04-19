@@ -11,8 +11,6 @@ var teamList = [];
 const OUTPUT_DIR = path.resolve(__dirname, "output")
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-const writeFileAsync = util.promisify(fs.writeFile);
-
 const managerQuestions = [
     {
         type: "input",
@@ -89,34 +87,14 @@ function buildTeam() {
     })
 }
 
-async function buildHtml() 
+function buildHtml() 
 {
-    try {
-        for (member of teamList) {
-            if (member.getRole() == "Manager") {
-                teamList.push(manager);
-            } else if (member.getRole() == "Engineer") {
-                teamList.push(engineer);
-            } else if (member.getRole() == "Intern") {
-                teamList.push(intern);
-            }
-        }
-    const html = render.render(teamList);
-    return writeFileAsync(outputPath, html);
-    }  
-    catch (err)
-        {
-            console.log("Page Generated!");
-        }
+        // console.log(teamList);
 
-    // fs.appendFileSync("./output/teamPage.html", "</div></main></body></html>", function (err) {
-    //     if (err) throw err;
-    // });
-    // console.log("Page tags closed! Operation completed.")
+        fs.writeFileSync(outputPath, render(teamList), "utf-8");
+    console.log("Operation completed.")
 
 }
-
-
 
 function init() {
     inquire.prompt(managerQuestions).then(manager => {
