@@ -12,6 +12,8 @@ athomik79
 
 Template Engine - Employee Summary
 
+![Template Engine](https://github.com/athomik79/10-Template-Engine-Employee-Summary/blob/master/Template%20Engine.png)
+
 ### Description:
 
 A software engineering team generator command line application.
@@ -39,4 +41,6 @@ jestjs.io is used for running tests, can be run wih `npm run test`
 ### Questions:
 
 Does it work?
+
+![Template Engine](https://github.com/athomik79/10-Template-Engine-Employee-Summary/blob/master/Template%20Engine.gif)
 
