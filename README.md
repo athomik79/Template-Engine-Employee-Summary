@@ -34,7 +34,7 @@ athomik79
 
 ### Tests:
 
-jestjs.io is used for running tests, can be run wih `npm runt test`
+jestjs.io is used for running tests, can be run wih `npm run test`
 
 ### Questions:
 
